@@ -89,10 +89,9 @@ body {
   display: none !important;
 }
 
-/* 8. .skiptranslate 클래스 완전 숨김 & 상단 공간 복원 */
-.skiptranslate {
-  display: none !important;
-}
+/* 8. 중요: .skiptranslate는 Google Translate가 전체 문서를 감싸는 래퍼일 수 있음
+   이를 display:none으로 숨기면 페이지 전체가 사라져(검은 배경만 보임) 태블릿 등에서 블랭크 화면이 발생할 수 있음.
+   따라서 .skiptranslate 자체는 숨기지 않습니다. */
 
 body {
   top: 0 !important;
@@ -101,5 +100,18 @@ body {
 /* 9. iframe.skiptranslate 숨김 */
 iframe.skiptranslate {
   visibility: hidden !important;
+}
+
+
+/* 🌿 태블릿 대응: Google Translate iframe은 보이되(레이아웃 보정),
+   실제로는 투명/비상호작용으로 처리하여 화면 사라짐 문제 방지 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  iframe.skiptranslate {
+    visibility: visible !important;      /* 태블릿에서 완전 숨김 대신 보이게 처리 */
+    opacity: 0 !important;               /* 화면엔 보이지 않지만 */
+    pointer-events: none !important;      /* 클릭/포커스 차단 */
+    height: 0 !important;                 /* 레이아웃 영향 최소화 */
+    width: 0 !important;
+  }
 }
 
