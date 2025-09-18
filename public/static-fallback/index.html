@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,16 @@
   <style>
     body { font-family: sans-serif; background: #222; color: #fff; margin: 0; }
     header { background: #1a3a4a; padding: 1.5rem 1rem; text-align: center; }
-  nav { background: #18324a; text-align: center; padding: 1rem 0; }
-  nav a { color: #fff; text-decoration: none; font-weight: bold; font-size: 1.2rem; display: inline-block; margin: 0 0.8rem; }
-    nav a:hover { text-decoration: underline; }
-    main { max-width: 980px; margin: 1.2rem auto 2rem; background: #2a4155; border-radius: 1rem; padding: 1.2rem; box-shadow: 0 2px 8px #0004; }
+    main { max-width: 720px; margin: 1.2rem auto 2rem; background: #2a4155; border-radius: 1rem; padding: 1.2rem; box-shadow: 0 2px 8px #0004; }
     h1 { margin: 0.2rem 0 0.6rem; font-size: 1.6rem; letter-spacing: 1px; }
-    .desc { color: #b5e0ff; margin: 0.6rem auto 1rem; max-width: 760px; }
+    .notice { color: #ffd78a; text-align: center; margin: 0.6rem 0 1rem; font-weight: 600; }
+    form { display: block; }
+    label { display: block; font-weight: bold; color: #b5e0ff; margin: 0.6rem 0 0.3rem; }
+    input, textarea { width: 100%; box-sizing: border-box; border: none; border-radius: 0.5rem; padding: 0.7rem; font-size: 1rem; background: #fff; color: #222; }
+    textarea { min-height: 120px; resize: vertical; }
+    button { margin-top: 0.8rem; background: #84CC9A; color: #0b1b26; border: none; border-radius: 0.5rem; padding: 0.8rem 1.2rem; font-size: 1.05rem; font-weight: bold; cursor: pointer; }
+    button:hover { background: #6DBE87; }
+    .msg { margin-top: 0.6rem; color: #b5e0ff; font-weight: bold; text-align: center; }
     footer { text-align: center; color: #aaa; margin: 2rem 0 1rem; font-size: 0.95rem; }
   </style>
 </head>
@@ -21,56 +25,51 @@
   <header>
     <h1>GPTXGONGMYUNG.COM</h1>
   </header>
-  <nav>
-    <a href="/static-fallback/index.html">HOME</a>
-    <a href="/static-fallback/gallery.html">EXHIBITION</a>
-    <a href="/static-fallback/about.html">ABOUT US</a>
-    <a href="/static-fallback/contact.html">CONTACT US</a>
-  </nav>
   <main>
-    <section class="hero">
-      <div class="hero-buttons">
-        <a class="btn" href="/static-fallback/gallery.html">EXHIBITION</a>
-        <a class="btn" href="/static-fallback/about.html">ABOUT US</a>
-        <a class="btn" href="/static-fallback/contact.html">CONTACT US</a>
-      </div>
-      <div class="desc">
-        Minimal static version for legacy browsers. Some features are disabled on your device.
-      </div>
-    </section>
-
-    <h2 style="margin:0.6rem 0 0.6rem;">Exhibition</h2>
-    <div id="galleryGrid" class="grid" aria-live="polite"></div>
+    <p class="notice">For devices with Android 8.x OR Chrome below version 70, homepage features may not work properly.</p>
+    <h2 style="margin:0.2rem 0 0.6rem; text-align:center;">Contact Us</h2>
+    <form id="contactForm" autocomplete="off">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+      <button type="submit">Send</button>
+      <div class="msg" id="formMsg"></div>
+    </form>
   </main>
   <footer>
     &copy; 2025 GPTXGONGMYUNG. All rights reserved.
   </footer>
   <script>
-    // Fetch gallery items (published + in-review) and render simple cards
     (function(){
-      var grid = document.getElementById('galleryGrid');
-      if (!grid) return;
-      grid.innerHTML = '<div style="text-align:center;color:#b5e0ff;">Loading...</div>';
-      fetch('/api/gallery?type=gallery', { cache: 'no-store' })
-        .then(function(res){ return res.ok ? res.json() : []; })
-        .then(function(items){
-          if (!Array.isArray(items) || items.length === 0) {
-            grid.innerHTML = '<div style="text-align:center;color:#b5e0ff;">No items</div>';
-            return;
+      var form = document.getElementById('contactForm');
+      if (!form) return;
+      form.onsubmit = async function(e){
+        e.preventDefault();
+        var msg = document.getElementById('formMsg');
+        msg.textContent = 'Sending...';
+        try {
+          var res = await fetch('/api/send-mail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: this.name.value,
+              email: this.email.value,
+              message: this.message.value
+            })
+          });
+          if (res.ok) {
+            msg.textContent = 'Your message has been sent successfully!';
+            this.reset();
+          } else {
+            msg.textContent = 'Failed to send. Please try again later.';
           }
-          var html = items.slice(0, 12).map(function(item){
-            var img = item.iconUrl || (item.screenshotUrls && item.screenshotUrls[0]) || '/icon-192x192.png';
-            var name = item.name || item.title || 'Untitled';
-            var dev = item.developer || item.author || '';
-            return '<div class="card">' +
-                     '<img src="' + img + '" alt="' + name.replace(/"/g,'&quot;') + '">' +
-                     '<div class="name">' + name + '</div>' +
-                     (dev ? '<div class="developer">' + dev + '</div>' : '') +
-                   '</div>';
-          }).join('');
-          grid.innerHTML = html;
-        })
-        .catch(function(){ grid.innerHTML = '<div style="text-align:center;color:#b5e0ff;">Failed to load</div>'; });
+        } catch (_) {
+          msg.textContent = 'Failed to send. Network error.';
+        }
+      };
     })();
   </script>
 </body>
