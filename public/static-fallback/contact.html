@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPTx공명 - 문의/폼메일 (정적)</title>
+  <title>Contact Us - GPTXGONGMYUNG.COM</title>
   <link rel="icon" href="/favicon.ico">
   <style>
     body { font-family: sans-serif; background: #222; color: #fff; margin: 0; }
@@ -25,27 +25,28 @@
 </head>
 <body>
   <header>
-    <h1>문의/폼메일 (정적)</h1>
+    <h1>CONTACT US</h1>
   </header>
   <nav>
-    <a href="/static-fallback/index.html">홈</a>
-    <a href="/static-fallback/gallery.html">갤러리</a>
-    <a href="/static-fallback/memo.html">메모</a>
+    <a href="/static-fallback/index.html">HOME</a>
+    <a href="/static-fallback/gallery.html">EXHIBITION</a>
+    <a href="/static-fallback/about.html">ABOUT US</a>
+    <a href="/static-fallback/contact.html">CONTACT US</a>
   </nav>
   <main>
     <form id="contactForm" autocomplete="off">
-      <label for="name">이름</label>
+  <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
-      <label for="email">이메일</label>
+  <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
-      <label for="message">내용</label>
+  <label for="message">Message</label>
       <textarea id="message" name="message" required></textarea>
-      <button type="submit">보내기</button>
+  <button type="submit">Send</button>
       <div class="msg" id="formMsg"></div>
     </form>
   </main>
   <footer>
-    &copy; 2025 GPTx공명. All rights reserved.
+  &copy; 2025 GPTXGONGMYUNG. All rights reserved.
   </footer>
   <script>
     document.getElementById('contactForm').onsubmit = async function(e) {
