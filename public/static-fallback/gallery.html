@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPTx공명 - 갤러리 (정적)</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    body { font-family: sans-serif; background: #222; color: #fff; margin: 0; }
+    header { background: #1a3a4a; padding: 1.5rem 1rem; text-align: center; }
+    nav { background: #18324a; display: flex; justify-content: center; gap: 2rem; padding: 1rem 0; }
+    nav a { color: #fff; text-decoration: none; font-weight: bold; font-size: 1.2rem; }
+    nav a:hover { text-decoration: underline; }
+    main { max-width: 700px; margin: 2rem auto; background: #2a4155; border-radius: 1rem; padding: 2rem; box-shadow: 0 2px 8px #0004; }
+    h1 { margin-top: 0; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1.5rem; }
+    .gallery-item { background: #18324a; border-radius: 0.7rem; padding: 1rem; text-align: center; }
+    .gallery-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 0.5rem; background: #fff; }
+    .gallery-item .name { color: #b5e0ff; font-weight: bold; margin-top: 0.5rem; }
+    footer { text-align: center; color: #aaa; margin: 2rem 0 1rem; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>갤러리 (정적)</h1>
+  </header>
+  <nav>
+    <a href="/static-fallback/index.html">홈</a>
+    <a href="/static-fallback/memo.html">메모</a>
+    <a href="/static-fallback/contact.html">문의/폼메일</a>
+  </nav>
+  <main>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="/logo.png" alt="샘플1">
+        <div class="name">앱 샘플1</div>
+      </div>
+      <div class="gallery-item">
+        <img src="/icon-192x192.png" alt="샘플2">
+        <div class="name">앱 샘플2</div>
+      </div>
+      <div class="gallery-item">
+        <img src="/icon-512x512.png" alt="샘플3">
+        <div class="name">앱 샘플3</div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    &copy; 2025 GPTx공명. All rights reserved.
+  </footer>
+</body>
+</html>

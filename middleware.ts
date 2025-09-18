@@ -39,7 +39,7 @@ export function middleware(req: NextRequest) {
   // 기타: (필요시 추가)
 
   if (isOldAndroid || isOldChrome) {
-    // 정적 폴백 페이지로 리다이렉트
+    // 정적 폴백 페이지로 리다이렉트 (public/static-fallback)
     const url = req.nextUrl.clone();
     url.pathname = '/static-fallback/index.html';
     return NextResponse.redirect(url, 302);
